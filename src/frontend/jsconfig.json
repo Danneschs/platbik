@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@bookmarks/*": ["src/bookmarks/*"],
+			"@auth/*": ["src/auth/*"],
+			"@objects/*": ["src/objects/*"],
+			"@styles/*": ["src/styles/*"],
+
+			"@api/*": ["src/api/*"],
+			"@components/*": ["src/components/*"],
+			"@forms/*": ["src/components/forms/*"],
+			"@tables/*": ["src/components/tables/*"],
+			"@dialogs/*": ["src/components/dialogs/*"],
+			"@columns/*": ["src/components/columns/*"],
+			"@atoms/*": ["src/components/atoms/*"],
+			"@main/*": ["src/*"],
+			"@backend/*": ["backend/*"],
+			"@models/*": ["backend/models/*"],
+			"@routes/*": ["backend/routes/*"],
+			"@mappers/*": ["src/mappers/*"],
+			"@config/*": ["src/config/*"]
+		},
+		"moduleResolution": "node"
+	},
+	"include": ["src", "backend"]
+}
