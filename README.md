@@ -8,6 +8,8 @@ Webová aplikace pro správu společných nákupů a vyrovnávání dluhů mezi 
 
 Platbík je webová aplikace pro evidenci a správu společných nákupů ve skupině lidí (např. spolubydlící, přátelé, rodina). Aplikace umožňuje zaznamenávat nákupy, automaticky počítat dluhy mezi uživateli a spravovat jejich vyrovnání.
 
+Aplikace je postavená na [Material UI](https://mui.com/) a [Emotion](https://emotion.sh/).
+
 ### Vznik
 Návrh frontendu této aplikace vznikl jako semestrální práce na **Fakultě aplikovaných věd Západočeské univerzity v Plzni** z předmětu Úvod do uživatelských rozhraní (KIV/UUR). Backend byl později dokončen jako semestrální práce z předmětu Základy počítačových sítí (KIV/ZPS) a na aplikaci je dále pracováno v rámci osobního použití.
 
