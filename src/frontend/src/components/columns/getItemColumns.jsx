@@ -46,7 +46,7 @@ function getItemColumns(handleDelete, isEditable, currencyFormat, errorColor) {
 
 	const validatePrice = (value) => {
 		const val = Number(value);
-		return isNaN(val) || val < 1 || !/^\d+(\.\d{1,2})?$/.test(value) || val > 999_999;
+		return isNaN(val) || val <= 0 || !/^\d+(\.\d{1,2})?$/.test(value) || val > 999_999;
 	};
 
 	const validateAmount = (value) => {
