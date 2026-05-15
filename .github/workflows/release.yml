@@ -1,0 +1,45 @@
+name: Build and Release
+
+on:
+    push:
+        tags:
+            - 'v*'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - uses: actions/checkout@v4
+
+            # Frontend
+            - name: Setup Node.js
+            uses: actions/setup-node@v4
+            with:
+                node-version: '24'
+            - run: npm ci
+            working-directory: ./frontend
+            - run: npm run build
+            working-directory: ./frontend
+
+            # Backend
+            - name: Setup .NET
+            uses: actions/setup-dotnet@v4
+            with:
+                dotnet-version: '10.0.x'
+            - run: dotnet publish backend.csproj -c Release -o ./publish
+            working-directory: ./backend
+
+            # Create ZIP
+            - name: Create Zip Archive
+            run: zip -r release.zip ./frontend/dist ./publish
+
+            # Release
+            - name: Create Release
+            uses: softprops/action-gh-release@v1
+            with:
+                files: release.zip
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import license from 'rollup-plugin-license';
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -13,7 +14,17 @@ export default defineConfig({
 	build: {
 		target: "esnext",
 		cssCodeSplit: false,
-		assetsInlineLimit: 100000000, // vše inline
+		assetsInlineLimit: 100000000,
+		rollupOptions: {
+         plugins: [
+           license({
+             thirdParty: {
+               // Creates licenses.txt in dist folder
+               output: path.resolve(__dirname, './dist/licenses.txt'),
+             },
+           }),
+		 ],
+	   },
 	},
 	resolve: {
 		alias: {
@@ -40,9 +51,9 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/api": {
-				target: "http://localhost:5119", // port backendu z launchSettings
+				target: "http://localhost:5119", // port for backend from launchSettings
 				changeOrigin: true,
-				secure: false, // backend není HTTPS
+				secure: false, // backend is not HTTPS
 			},
 		},
 	},

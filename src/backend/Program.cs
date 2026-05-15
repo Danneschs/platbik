@@ -72,8 +72,10 @@ public class Program
         builder.Services.AddAuthorization();
 
         // Database
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite("Data Source=Data/app.db"));
+            options.UseSqlite(connectionString));
 
         // CORS: in dev allow Vite (localhost:5173), in production allow specific domain
         var allowedOrigins = builder.Environment.IsDevelopment()
