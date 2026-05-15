@@ -12,32 +12,32 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       # Frontend
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
-          node-version: '24'
+          node-version: 24
       
       - run: npm ci
-        working-directory: ./frontend
+        working-directory: ./src/frontend
       
       - run: npm run build
-        working-directory: ./frontend
+        working-directory: ./src/frontend
 
       # Backend
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7
         with:
           dotnet-version: '10.0.x'
       
       - run: dotnet publish backend.csproj -c Release -o ./publish
-        working-directory: ./backend
+        working-directory: ./src/backend
 
       # Create ZIP
       - name: Create Zip Archive
-        run: zip -r release.zip ./frontend/dist ./publish
+        run: zip -r release.zip ./src/frontend/dist ./publish
 
       # Release
       - name: Create Release
