@@ -41,11 +41,11 @@ jobs:
 
       # Create ZIP
       - name: Create Zip Archive
-        run: zip -r release.zip ./src/frontend/dist ./publish
+        run: zip -r release.zip ./src/frontend/dist ./src/backend/publish
 
       # Release
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda
         with:
           files: release.zip
         env:
