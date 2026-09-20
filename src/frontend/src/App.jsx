@@ -4,8 +4,7 @@ import Grid from '@main/Grid.jsx';
 import AllPurchases from "@bookmarks/AllPurchases.jsx";
 import MyPurchases from "@bookmarks/MyPurchases.jsx";
 import MyCommitments from "@bookmarks/MyCommitments.jsx";
-import About from '@bookmarks/About.jsx';
-import Auth from '@bookmarks/Auth.jsx';
+import LoginPage from '@bookmarks/LoginPage.jsx';
 
 /**
  * Provides all routes for the application.
@@ -19,8 +18,7 @@ function App() {
             <Route path="/vsechny-nakupy" element={<Grid title="Seznam všech nákupů"><AllPurchases /></Grid>} />
             <Route path="/moje-nakupy" element={<Grid title="Seznam nákupů uživatele"><MyPurchases /></Grid>} />
             <Route path="/zavazkove-vztahy" element={<Grid title="Seznam závazkových vztahů uživatele"><MyCommitments /></Grid>} />
-            <Route path="/o-aplikaci" element={<About />} />
-            <Route path="/prihlaseni" element={<Auth />} />
+            <Route path="/prihlaseni" element={<Grid title="Přihlášení"><LoginPage /></Grid>} />
             <Route path="*" element={<Navigate to="/vsechny-nakupy" />} />
         </Routes>
     );

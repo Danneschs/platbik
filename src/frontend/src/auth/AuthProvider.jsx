@@ -3,6 +3,7 @@ import { AuthContext } from "@auth/AuthContext";
 
 import { loginService, getCurrentUserService, requestRegistrationService } from "@api/users";
 import RegisterUserDto from "@objects/RegisterUserDto";
+import { LoginStatus, RegistrationStatus, LoginMessage } from "@objects/AuthStatus";
 
 /**
  * AuthProvider component to provide authentication context for children components
@@ -23,7 +24,7 @@ function AuthProvider({ children }) {
 
 		const fetchUser = async () => {
 			try {
-				const { user: loggedUser } = await getCurrentUserService(tokenFromStorage);
+				const loggedUser = await getCurrentUserService(tokenFromStorage);
 
 				// Invalid token or user not found
 				if (!loggedUser) {
@@ -45,21 +46,19 @@ function AuthProvider({ children }) {
 
 	const login = async (email, password) => {
 		try {
-			const credentials = await loginService(email, password);
-			const { token, user } = credentials || {};
+			const loginStatus = await loginService(email, password);
 
-			// Invalid credentials or user not found
-			if (!credentials || !token || !user) {
-				//console.error("Invalid login response:", { token, user });
+			if (!loginStatus.success) {
 				setLogoutState();
-				return false;
+				return loginStatus;
+			} else {
+				setLoggedInState(loginStatus.token, loginStatus.user);
+				return loginStatus;
 			}
-			setLoggedInState(token, user);
-			return true;
 		} catch (err) {
-			console.error("Login failed:", err);
 			setLogoutState();
-			return false;
+			console.error("Login failed:", err);
+			return new LoginMessage(false, LoginStatus.getUnexpectedMessage());
 		}
 	};
 
@@ -79,18 +78,12 @@ function AuthProvider({ children }) {
 
 	const register = async (name, surname, accountNumber, email, password) => {
 		const newUserDto = new RegisterUserDto(name, surname, accountNumber, email, password);
-		let registerServiceResponse = null;
 		try {
-			registerServiceResponse = await requestRegistrationService(newUserDto);
-			if (registerServiceResponse.success) {
-				// Optionally, you can auto-login after registration
-				//const loginSuccess = await login(email, password);
-				return { success: true }; // Request for registration was successful
-			}
+			return await requestRegistrationService(newUserDto);
 		} catch (err) {
 			console.error("Registration failed:", err);
+			return new RegistrationStatus(); // unexpected error
 		}
-		return registerServiceResponse;
 	};
 
 	return (
@@ -101,8 +94,7 @@ function AuthProvider({ children }) {
 				login,
 				logout,
 				register,
-			}}
-		>
+			}}>
 			{children}
 		</AuthContext.Provider>
 	);

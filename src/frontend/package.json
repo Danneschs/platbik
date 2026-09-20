@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@danneschs/libnik-ui": "^0.1.0",
+    "@danneschs/libnik-ui": "^0.1.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
@@ -25,6 +25,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
+    "uuid": "^14.0.2",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
