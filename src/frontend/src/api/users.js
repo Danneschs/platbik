@@ -1,4 +1,5 @@
 import { URL } from "@api/url.js";
+import { LoginStatus, RegistrationStatus } from "@objects/AuthStatus.js";
 
 export async function loginService(email, password) {
 	// Try to login the user
@@ -10,14 +11,31 @@ export async function loginService(email, password) {
 		body: JSON.stringify({ email, password }),
 	});
 
-	if (!response.ok) {
-		return null; // Invalid credentials or user not found
+	const loginStatus = new LoginStatus();
+
+	// server is not responding
+	if (response.status >= 500) {
+		loginStatus.setNotResponding();
+		return loginStatus;
+	} else if (response.status === 400 || response.status === 401) {
+		//400 - invalid format
+		//401 - invalid credentials
+		loginStatus.setInvalidCredentials();
+		return loginStatus;
 	}
 
+	// checking the user info, if exists
 	const data = await response.json();
 	const token = data.token;
-	// Get user information after successful login
-	return getCurrentUserService(token);
+	const me = await getCurrentUserService(token); // Get user information after successful login
+
+	if (me === null) {
+		loginStatus.setInvalidCredentials();
+	} else {
+		loginStatus.addUser(me.token, me.user);
+	}
+
+	return loginStatus;
 }
 
 export async function getCurrentUserService(token) {
@@ -63,12 +81,24 @@ export async function requestRegistrationService(newUserDto) {
 		body: JSON.stringify(newUserDto),
 	});
 
-	if (!response.ok) {
-		const errorData = await response.json();
-		return { success: false, errors: errorData }; // Registration failed
+	const registrationStatus = new RegistrationStatus();
+
+	// server is not responding
+	if (response.status >= 500) {
+		registrationStatus.setNotResponding();
+		return registrationStatus;
+	} else if (response.status === 400) {
+		//400 - invalid format
+		const errors = response.json();
+		registrationStatus.setErrors(errors);
+	} else if (response.status === 409) {
+		//409 - user or registration request with this email already exists
+		registrationStatus.setAlreadyExists();
+	} else if (response.ok) {
+		registrationStatus.setOk(); // Registration request successful
 	}
 
-	return { success: true }; // Registration successful
+	return registrationStatus;
 }
 
 export async function getAllUsersService(token) {

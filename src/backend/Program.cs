@@ -20,7 +20,7 @@ public class Program
         Config.Initialize(currencyArg);
 
         var builder = WebApplication.CreateBuilder(args);
-        var jwtKey = builder.Configuration["Jwt:Key"]
+        var jwtKey = builder.Configuration["Jwt__Key"]
             ?? throw new InvalidOperationException("JWT key is not configured. Please set environment variable JWT__Key.");
         var key = Encoding.UTF8.GetBytes(jwtKey);
         builder.Services.AddSingleton<IJwtKeyProvider>(new JwtKeyProvider(jwtKey));
